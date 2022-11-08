@@ -43,7 +43,7 @@ public class UserApiController {
 		} else {
 			User userEntity = userService.회원수정(id, userUpdateDto.toEntity());
 			principalDetails.setUser(userEntity);
-			return new CMRespDto<>(1, "회원수정완료", userEntity);
+			return new CMRespDto<>(1, "회원수정완료", userEntity);//응답시에 userEntity의 모든 Getter 함수가 호출되고 Json으로 파싱하여 응답한다.
 		}
 	}
 }
