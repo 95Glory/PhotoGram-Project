@@ -45,5 +45,13 @@ public class Image {
 	@PrePersist
 	public void createDate() {
 		this.createDate=LocalDateTime.now();
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "Image [id=" + id + ", caption=" + caption + ", postImageUrl=" + postImageUrl
+				+ ", createDate=" + createDate + "]";
+	}
+	
+	
 }
