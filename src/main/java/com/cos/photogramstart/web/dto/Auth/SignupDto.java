@@ -11,6 +11,7 @@ import lombok.Data;
 // Dto는 통신을 위해서 필요한 데이터를 담아내는 오브젝트
 @Data
 public class SignupDto{
+	
 	@Size(min=2,max=20)
 	@NotBlank
 	private String username;
@@ -22,7 +23,6 @@ public class SignupDto{
 	private String email;
 	
 	@NotBlank
-	
 	private String name;
 	
 	public User toEntity() {
@@ -33,5 +33,4 @@ public class SignupDto{
 				.email(email)
 				.build();
 	}
-	
 }
