@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.cos.photogramstart.domain.User.User;
 
 import lombok.AllArgsConstructor;
