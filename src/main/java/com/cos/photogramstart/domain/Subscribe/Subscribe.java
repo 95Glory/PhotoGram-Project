@@ -45,12 +45,10 @@ public class Subscribe {
 	@ManyToOne
 	private User toUser;
 	
-	private LocalDateTime creatDate;
+	private LocalDateTime createDate;
 	
 	@PrePersist
 	public void createDate() {
-		this.creatDate=LocalDateTime.now();
+		this.createDate=LocalDateTime.now();
 	}
-	
-
 }

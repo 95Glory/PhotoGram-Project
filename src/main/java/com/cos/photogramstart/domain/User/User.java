@@ -46,10 +46,10 @@ public class User {
 	private String profilelmageUrl;
 	private String role;//권한
 	
-	private LocalDateTime creatDate;
+	private LocalDateTime createDate;
 	
 	@PrePersist // 디비에 insert 되기 직전에 실행
 	public void createDate() {
-		this.creatDate=LocalDateTime.now();
+		this.createDate=LocalDateTime.now();
 	}
 }
