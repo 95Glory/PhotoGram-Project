@@ -12,11 +12,11 @@ let page = 0;
 
 function storyLoad() {
 	$.ajax({
-		url: `/api/image`,
+		url: `/api/image?page=${page}`,
 		dataType: "json"
 	}).done(res => {
 		//console.log(res);
-		res.data.forEach((image)=>{
+		res.data.content.forEach((image)=>{
 			let storyItem = getStoryItem(image);
 			$("#storyList").append(storyItem);
 		});
@@ -83,7 +83,18 @@ function getStoryItem(image) {
 
 // (2) 스토리 스크롤 페이징하기
 $(window).scroll(() => {
-
+	console.log("윈도우 scrollTop",$(window).scrollTop());
+	console.log("문서의높이",$(document).height());
+	console.log("윈도우높이",$(window).height());
+	console.log("-------------------------------------------");
+	
+	let checkNum = $(window).scrollTop()-($(document).height()-$(window).height());
+	console.log(checkNum)
+	
+	if(checkNum < 1 && checkNum>-1){
+		page++;
+		storyLoad();
+	}
 });
 
 // (3) 좋아요, 안좋아요
