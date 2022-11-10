@@ -14,6 +14,7 @@ import javax.persistence.PrePersist;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cos.photogramstart.domain.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,25 +27,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String caption; // 오늘 나 너무 피곤해!!
 	private String postImageUrl; // 사진을 전송받아서 그 사진을 서버에 특정 폴더에 저장 - DB에 그 저장된 경로를 insert
-	
-	@JoinColumn(name="userId")
+
+	@JsonIgnoreProperties({ "images" })
+	@JoinColumn(name = "userId")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
-	
-	//이미지 좋아요
-	
-	//댓글
-	
+
+	// 이미지 좋아요
+
+	// 댓글
+
 	private LocalDateTime createDate;
-	
+
 	@PrePersist
 	public void createDate() {
-		this.createDate=LocalDateTime.now();
-	}	
+		this.createDate = LocalDateTime.now();
+	}
 }
