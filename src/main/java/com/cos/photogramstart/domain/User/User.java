@@ -57,7 +57,7 @@ public class User {
 
 	private String phone;
 	private String gender;
-	private String profilelmageUrl;
+	private String profileImageUrl;
 	private String role;// 권한
 
 	private LocalDateTime createDate;

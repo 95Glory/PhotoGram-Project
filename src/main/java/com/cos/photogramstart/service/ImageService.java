@@ -23,34 +23,30 @@ public class ImageService {
 
 	@Autowired
 	ImageRepository imageRepository;
-	
+
 	@Transactional(readOnly = true)
-	public List<Image> 인기사진(){
+	public List<Image> 인기사진() {
 		return imageRepository.mPopular();
 	}
-	
+
 	@Transactional(readOnly = true) // 영속성 컨텍스트 변경 감지를 해서, 더티체킹, flush(반영)
 	public Page<Image> 이미지스토리(int principalId, Pageable pageable) {
 		Page<Image> images = imageRepository.mStory(principalId, pageable);
-		
+
 		// images에 좋아요 상태담기
-		images.forEach((image)->{
-			
+		images.forEach((image) -> {
+
 			image.setLikeCount(image.getLikes().size());
-			
-			
-				image.getLikes().forEach((like)->{
-					if(like.getUser().getId() == principalId) { // 해당 이미지에 좋아요한 사람들을 찾아서 현재 로긴한 사람이 좋아요 한것인지 비교
-						image.setLikeState(true);					}
-				});
-			
-			
-			
+
+			image.getLikes().forEach((like) -> {
+				if (like.getUser().getId() == principalId) { // 해당 이미지에 좋아요한 사람들을 찾아서 현재 로긴한 사람이 좋아요 한것인지 비교
+					image.setLikeState(true);
+				}
+			});
+
 		});
 		return images;
 	}
-
-	
 
 	@Value("${file.path}")
 	private String uploadFolder;
