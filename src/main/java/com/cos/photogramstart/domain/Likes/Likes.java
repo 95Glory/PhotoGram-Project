@@ -39,6 +39,7 @@ public class Likes {
 
 	@JoinColumn(name = "userId")
 	@ManyToOne
+	@JsonIgnoreProperties({"images"})
 	private User user;
 
 	private LocalDateTime createDate;
