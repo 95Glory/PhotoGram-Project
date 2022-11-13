@@ -25,74 +25,74 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class UserService {
-	
+
 	private final UserRepository userRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Autowired
 	SubscribeRepository subscribeRepository;
-	
+
 	@Value("${file.path}")
 	private String uploadFolder;
-	
+
 	@Transactional
 	public User 회원프로필사진변경(int principalId, MultipartFile profileImageFile) {
 		UUID uuid = UUID.randomUUID(); // uuid
-		String imageFileName = uuid+"_"+profileImageFile.getOriginalFilename(); // 1.jpg
-		System.out.println("이미지 파일이름 : "+imageFileName);
-		
-		Path imageFilePath = Paths.get(uploadFolder+imageFileName);
-		
+		String imageFileName = uuid + "_" + profileImageFile.getOriginalFilename(); // 1.jpg
+		System.out.println("이미지 파일이름 : " + imageFileName);
+
+		Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+
 		// 통신, I/O -> 예외가 발생할 수 있다.
 		try {
 			Files.write(imageFilePath, profileImageFile.getBytes());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		User userEntity = userRepository.findById(principalId).orElseThrow(()->{
+
+		User userEntity = userRepository.findById(principalId).orElseThrow(() -> {
 			// throw -> return 으로 변경
 			return new CustomApiException("유저를 찾을 수 없습니다.");
 		});
 		userEntity.setProfileImageUrl(imageFileName);
-		
+
 		return userEntity;
 	} // 더티체킹으로 업데이트 됨.
-	
+
 	@Transactional(readOnly = true)
-	public UserProfileDto 회원프로필(int pageUserId,int principalId) {
+	public UserProfileDto 회원프로필(int pageUserId, int principalId) {
 		UserProfileDto dto = new UserProfileDto();
-		
-		User userEntity = userRepository.findById(pageUserId).orElseThrow(()->{
+
+		User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
 			throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
 		});
 
 		dto.setUser(userEntity);
 		dto.setPageOwnerState(pageUserId == principalId);
 		dto.setImageCount(userEntity.getImages().size());
-		
+
 		int subscribeState = subscribeRepository.mSubscribeState(principalId, pageUserId);
 		int subscribeCount = subscribeRepository.mSubscribeCount(pageUserId);
-		
+
 		dto.setSubscribeState(subscribeState == 1);
 		dto.setSubscribeCount(subscribeCount);
-		
-		userEntity.getImages().forEach((image)->{
+
+		userEntity.getImages().forEach((image) -> {
 			image.setLikeCount(image.getLikes().size());
 		});
-		
+
 		return dto;
 	}
-	
+
 	@Transactional
 	public User 회원수정(int id, User user) {
-		
+
 		// 1. 영속화
 		// 1. 무조건 찾았다.걱정마 get() 2. 못찾았어 익셉션 발동시킬게 orElseThrow()
 		User userEntity = userRepository.findById(id).orElseThrow(() -> {
 			return new CustomValidationApiException("찾을 수 없는 id입니다.");
 		});
-		
+
 		// 2. 영속화된 오브젝트를 수정 - 더티체킹(업데이트완료)
 		String rawPassword = user.getPassword();
 		String encPassword = bCryptPasswordEncoder.encode(rawPassword);
@@ -103,7 +103,7 @@ public class UserService {
 		userEntity.setWebsite(user.getEmail());
 		userEntity.setPhone(user.getPhone());
 		userEntity.setGender(user.getGender());
-	
+
 		return userEntity;
 	}
 }
