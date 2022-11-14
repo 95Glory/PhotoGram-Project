@@ -40,8 +40,7 @@ public class UserApiController {
 	SubscribeService subscribeService;
 
 	@PutMapping("/api/user/{principalId}/profileImageUrl")
-	public ResponseEntity<?> profileImageUrlUpdate(@PathVariable int principalId, MultipartFile profileImageFile,
-			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+	public ResponseEntity<?> profileImageUrlUpdate(@PathVariable int principalId, MultipartFile profileImageFile,@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		User userEntity = userService.회원프로필사진변경(principalId, profileImageFile);
 		principalDetails.setUser(userEntity); // 세션 변경
 		return new ResponseEntity<>(new CMRespDto<>(1, "프로필사진변경 성공", null), HttpStatus.OK);
@@ -57,19 +56,10 @@ public class UserApiController {
 	}
 
 	@PutMapping("/api/user/{id}")
-	public CMRespDto<?> update(@PathVariable int id, @Valid UserUpdateDto userUpdateDto, BindingResult bindingResult,
-			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+	public CMRespDto<?> update(@PathVariable int id, @Valid UserUpdateDto userUpdateDto, BindingResult bindingResult,@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-		if (bindingResult.hasErrors()) {
-			Map<String, String> errorMap = new HashMap<>();
-			for (FieldError error : bindingResult.getFieldErrors()) {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-			}
-			throw new CustomValidationApiException("유효성검사 실패", errorMap);
-		} else {
 			User userEntity = userService.회원수정(id, userUpdateDto.toEntity());
 			principalDetails.setUser(userEntity);
 			return new CMRespDto<>(1, "회원수정완료", userEntity);// 응답시에 userEntity의 모든 Getter 함수가 호출되고 Json으로 파싱하여 응답한다.
 		}
 	}
-}
