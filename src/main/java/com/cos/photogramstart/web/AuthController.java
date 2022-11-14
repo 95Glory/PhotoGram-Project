@@ -50,7 +50,7 @@ public class AuthController {
 			for (FieldError error : bindingResult.getFieldErrors()) {
 				errorMap.put(error.getField(), error.getDefaultMessage());
 			}
-			throw new CustomValidationException("유효성검사 실패함",errorMap);
+			throw new CustomValidationException("유효성검사 실패함", errorMap);
 		} else {
 			log.info(signupDto.toString());
 			User user = signupDto.toEntity();

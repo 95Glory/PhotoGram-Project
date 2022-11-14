@@ -11,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
+import com.cos.photogramstart.domain.Comment.Comment;
 import com.cos.photogramstart.domain.Likes.Likes;
 import com.cos.photogramstart.domain.User.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,7 +35,7 @@ public class Image {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String caption; // 오늘 나 너무 피곤해!!
 	private String postImageUrl; // 사진을 전송받아서 그 사진을 서버에 특정 폴더에 저장 - DB에 그 저장된 경로를 insert
 
@@ -49,11 +51,15 @@ public class Image {
 
 	@Transient // DB에 칼럼이 만들어지지 않는다.
 	private Boolean likeState;
-	
+
 	@Transient // DB에 칼럼이 만들어지지 않는다.
 	private int likeCount;
 
 	// 댓글
+	@OrderBy("id DESC")
+	@JsonIgnoreProperties({ "image" })
+	@OneToMany(mappedBy = "image")
+	private List<Comment> Comments;
 
 	private LocalDateTime createDate;
 

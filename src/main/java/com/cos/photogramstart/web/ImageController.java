@@ -20,41 +20,42 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class ImageController {
-	
+
 	@Autowired
 	ImageService imageService;
-	
-	@GetMapping({"/","image/story"})
+
+	@GetMapping({ "/", "image/story" })
 	public String story() {
 		return "image/story";
 	}
-	
+
 	@GetMapping("image/popular")
 	public String popular(Model model) {
-		
-		//api는 데이터를 리턴하는 서버
+
+		// api는 데이터를 리턴하는 서버
 		List<Image> images = imageService.인기사진();
-		
-		model.addAttribute("images",images);
-		
+
+		model.addAttribute("images", images);
+
 		return "image/popular";
 	}
-	
+
 	@GetMapping("image/upload")
 	public String upload() {
 		return "image/upload";
 	}
-	
+
 	@PostMapping("/image")
-	public String imageUpload(ImageUploadDto imageUploadDto,@AuthenticationPrincipal PrincipalDetails principalDetails) {
-		
+	public String imageUpload(ImageUploadDto imageUploadDto,
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
 		if (imageUploadDto.getFile().isEmpty()) {
 			throw new CustomValidationException("이미지가 첨부되지 않았습니다.", null);
 		}
-		
-		//서비스 호출
+
+		// 서비스 호출
 		imageService.사진업로드(imageUploadDto, principalDetails);
-		
-		return "redirect:/user/"+principalDetails.getUser().getId();
+
+		return "redirect:/user/" + principalDetails.getUser().getId();
 	}
 }

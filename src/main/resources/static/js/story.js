@@ -57,25 +57,28 @@ function getStoryItem(image) {
 			</button>
 		</div>
 
-		<span class="like"><b id="storyLikeCount-${image.id}">${image.likeCount}</b>likes</span>
+		<span class="like"><b id="storyLikeCount-${image.id}">${image.likeCount} </b>likes</span>
 
 		<div class="sl__item__contents__content">
 			<p>${image.caption}</p>
 		</div>
 
-		<div id="storyCommentList-${image.id}">
+		<div id="storyCommentList-${image.id}">`;
 
-			<div class="sl__item__contents__comment" id="storyCommentItem-1"">
+	image.comments.forEach((comment) => {
+		item += `<div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}">
 				<p>
-					<b>Lovely :</b> 부럽습니다.
+					<b>${comment.user.username} :</b> ${comment.content}
 				</p>
 
 				<button>
 					<i class="fas fa-times"></i>
 				</button>
+			</div>`;
+	});
 
-			</div>
 
+	item += `
 		</div>
 
 		<div class="sl__item__input">
@@ -84,14 +87,13 @@ function getStoryItem(image) {
 		</div>
 
 	</div>
-</div>`
-
+</div>`;
 	return item;
 }
 
 // (2) 스토리 스크롤 페이징하기
 $(window).scroll(() => {
-	
+
 	let checkNum = $(window).scrollTop() - ($(document).height() - $(window).height());
 
 	if (checkNum < 1 && checkNum > -1) {
@@ -102,11 +104,11 @@ $(window).scroll(() => {
 
 // (3) 좋아요, 안좋아요
 function toggleLike(imageId) {
-	let likeIcon = $(`#storyLikeIcon-${imageId}`);
+	let likeIcon = $(`#storyLikeIcon - ${imageId} `);
 	if (likeIcon.hasClass("far")) { //좋아요 하겠다
 		$.ajax({
 			type: "post",
-			url: `/api/image/${imageId}/likes`,
+			url: `/ api / image / ${imageId} /likes`,
 			dataType: "json",
 		}).done(res => {
 
@@ -153,34 +155,37 @@ function addComment(imageId) {
 		imageId: imageId,
 		content: commentInput.val()
 	}
-	
+
 	if (data.content === "") {
 		alert("댓글을 작성해주세요!");
 		return;
 	}
-	
-	$.ajax({
-			type: "post",
-			url: "/api/comment",
-			data: JSON.stringify(data),
-			contentType:"application/json;charset=utf-8",
-			dataType: "json"
-		}).done(res => {
-			console.log("성공",res)
-		}).fail(error => {
-			console.log("오류",error)
-		});
 
-	let content = `
-			  <div class="sl__item__contents__comment" id="storyCommentItem-2""> 
+	$.ajax({
+		type: "post",
+		url: "/api/comment",
+		data: JSON.stringify(data),
+		contentType: "application/json;charset=utf-8",
+		dataType: "json"
+	}).done(res => {
+		console.log("성공", res);
+
+		let comment = res.data;
+
+		let content = `
+			  <div class="sl__item__contents__comment" id="storyCommentItem-${comment.id}"> 
 			    <p>
-			      <b>GilDong :</b>
-			      댓글 샘플입니다.
+			      <b>${comment.user.username} :</b>
+			      ${comment.content}
 			    </p>
 			    <button><i class="fas fa-times"></i></button>
 			  </div>
 	`;
-	commentList.prepend(content);
+		commentList.prepend(content);
+	}).fail(error => {
+		console.log("오류", error);
+	});
+
 	commentInput.val("");
 }
 

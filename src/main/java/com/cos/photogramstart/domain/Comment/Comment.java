@@ -14,6 +14,7 @@ import javax.persistence.PrePersist;
 
 import com.cos.photogramstart.domain.Image.Image;
 import com.cos.photogramstart.domain.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +37,7 @@ public class Comment {
 	
 	@JoinColumn(name = "userId")
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"images"})
 	private User user;
 	
 	@JoinColumn(name = "imageId")

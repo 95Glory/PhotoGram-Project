@@ -21,18 +21,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 public class CommentApiController {
-	
+
 	@Autowired
-	CommentService commentService; 
-	
+	CommentService commentService;
+
 	@PostMapping("/api/comment")
-	public ResponseEntity<?> commentSave(@RequestBody CommentDto commentDto, @AuthenticationPrincipal PrincipalDetails principalDetails){
-		Comment comment = commentService.댓글쓰기(commentDto.getContent(),commentDto.getImageId(),principalDetails.getUser().getId());
-		return new ResponseEntity<>(new CMRespDto<>(1, "댓글쓰기 성공",comment), HttpStatus.CREATED);
+	public ResponseEntity<?> commentSave(@RequestBody CommentDto commentDto,
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		Comment comment = commentService.댓글쓰기(commentDto.getContent(), commentDto.getImageId(),
+				principalDetails.getUser().getId());
+		return new ResponseEntity<>(new CMRespDto<>(1, "댓글쓰기 성공", comment), HttpStatus.CREATED);
 	}
-	
+
 	@DeleteMapping("/api/comment/{id}")
-	public ResponseEntity<?> commentDelete(@PathVariable int id){
+	public ResponseEntity<?> commentDelete(@PathVariable int id) {
 		return null;
 	}
 }

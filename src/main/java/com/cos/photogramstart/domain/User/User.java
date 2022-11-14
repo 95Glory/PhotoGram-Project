@@ -37,7 +37,7 @@ public class User {
 	// image들이 호출될 때 가져와
 	// Eager = User를 Select할 때 해당 UserId로 등록된 images들을 가져와
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({"user"})
+	@JsonIgnoreProperties({ "user" })
 	private List<Image> images; // 양방향 매핑
 
 	@Column(length = 20, unique = true)

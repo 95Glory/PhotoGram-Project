@@ -6,6 +6,6 @@ import lombok.Data;
 public class CommentDto {
 	private String content;
 	private int imageId;
-	
-	//toEntity가 필요없다.
+
+	// toEntity가 필요없다.
 }
