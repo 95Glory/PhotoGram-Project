@@ -21,10 +21,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Builder
-@Entity
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity // 디비에 테이블을 생성
 public class User {
 
 	@Id
@@ -40,7 +40,7 @@ public class User {
 	@JsonIgnoreProperties({ "user" })
 	private List<Image> images; // 양방향 매핑
 
-	@Column(length = 20, unique = true)
+	@Column(length = 100, unique = true)
 	private String username;
 
 	@Column(nullable = false)
