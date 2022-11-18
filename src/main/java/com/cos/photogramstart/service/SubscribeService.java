@@ -28,7 +28,7 @@ public class SubscribeService {
 
 		// 쿼리준비
 		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT u.id, u.username, u.profilelmageUrl, ");
+		sb.append("SELECT u.id, u.username, u.profileImageUrl, ");
 		sb.append("if ((SELECT 1 FROM subscribe WHERE fromUserId =? AND toUserId =u.id),1,0) subscribeState, ");
 		sb.append("if ((?=u.id),1,0) equalUserState ");
 		sb.append("FROM user u INNER JOIN subscribe s ");
@@ -36,7 +36,9 @@ public class SubscribeService {
 		sb.append("WHERE s.fromUserId = ?");// 세미콜론 첨부하면 안됨
 
 		// 쿼리완성
-		Query query = em.createNativeQuery(sb.toString()).setParameter(1, principalId).setParameter(2, principalId)
+		Query query = em.createNativeQuery(sb.toString())
+				.setParameter(1, principalId)
+				.setParameter(2, principalId)
 				.setParameter(3, pageUserId);
 
 		// 쿼리실행(qlrm 라이브러리 필요 = Dto에 결과를 매핑하기 위해서)
