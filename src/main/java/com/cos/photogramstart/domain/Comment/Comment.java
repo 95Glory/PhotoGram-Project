@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
-	
+	//git 테스트
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
