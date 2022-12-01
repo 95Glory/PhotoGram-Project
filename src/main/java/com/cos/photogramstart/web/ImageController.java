@@ -34,7 +34,6 @@ public class ImageController {
 	@GetMapping("image/popular")
 	public String popular(Model model) {
 
-		// api는 데이터를 리턴하는 서버
 		List<Image> images = imageService.인기사진();
 
 		model.addAttribute("images", images);

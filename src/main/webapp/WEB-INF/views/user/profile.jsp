@@ -12,7 +12,7 @@
 		<div class="profile-left">
 			<div class="profile-img-wrap story-border"
 				onclick="popup('.modal-image')">
-				
+
 				<form id="userProfileImageForm">
 					<input type="file" name="profileImageFile" style="display: none;"
 						id="userProfileImageInput" />
@@ -36,10 +36,12 @@
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${dto.subscribeState}">
-								<button class="cta blue" onclick="toggleSubscribe(${dto.user.id},this)">구독취소</button>
+								<button class="cta blue"
+									onclick="toggleSubscribe(${dto.user.id},this)">구독취소</button>
 							</c:when>
 							<c:otherwise>
-								<button class="cta" onclick="toggleSubscribe(${dto.user.id},this)">구독하기</button>
+								<button class="cta"
+									onclick="toggleSubscribe(${dto.user.id},this)">구독하기</button>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
@@ -53,7 +55,9 @@
 				<ul>
 					<li><a href=""> 게시물<span>${dto.imageCount}</span>
 					</a></li>
-					<li><a href="javascript:subscribeInfoModalOpen(${dto.user.id});"> 구독정보<span>${dto.subscribeCount}</span>
+					<li><a
+						href="javascript:subscribeInfoModalOpen(${dto.user.id});">
+							구독정보<span>${dto.subscribeCount}</span>
 					</a></li>
 				</ul>
 			</div>
@@ -112,7 +116,9 @@
 <div class="modal-image" onclick="modalImage()">
 	<div class="modal">
 		<p>프로필 사진 바꾸기</p>
-		<button onclick="profileImageUpload(${dto.user.id},${principal.user.id})">사진 업로드</button>
+		<button
+			onclick="profileImageUpload(${dto.user.id},${principal.user.id})">사진
+			업로드</button>
 		<button onclick="closePopup('.modal-image')">취소</button>
 	</div>
 </div>
@@ -128,10 +134,7 @@
 			</button>
 		</div>
 
-		<div class="subscribe-list" id="subscribeModalList">
-
-
-		</div>
+		<div class="subscribe-list" id="subscribeModalList"></div>
 	</div>
 
 </div>

@@ -27,13 +27,13 @@ public class ImageService {
 
 	@Autowired
 	ImageRepository imageRepository;
-	
+
 	@Autowired
 	AmazonS3Client amazonS3Client;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
-	
+
 	@Transactional(readOnly = true)
 	public List<Image> 인기사진() {
 		return imageRepository.mPopular();
@@ -59,51 +59,28 @@ public class ImageService {
 	}
 
 	@Transactional
-	public void 사진업로드(MultipartFile file,ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
-		
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType(file.getContentType());
-        objectMetadata.setContentLength(file.getSize());
+	public void 사진업로드(MultipartFile file, ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
 
-        String originalFilename = file.getOriginalFilename();//김영광.jpg
-        int index = originalFilename.lastIndexOf(".");//'.'이라는 문자가 발견되는 위치에 해당하는 index값(위치값) = 3
-        String ext = originalFilename.substring(index + 1);// index + 1 = 4 -> jpg
-        
-        String storeFileName = UUID.randomUUID() + "." + ext;// uuid.jpg
-        String key = "upload/" + storeFileName;
+		ObjectMetadata objectMetadata = new ObjectMetadata();
+		objectMetadata.setContentType(file.getContentType());
+		objectMetadata.setContentLength(file.getSize());
 
-        try (InputStream inputStream = file.getInputStream()) {
-            amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
-        } catch (IOException e) {
+		String originalFilename = file.getOriginalFilename();// 김영광.jpg
+		int index = originalFilename.lastIndexOf(".");// '.'이라는 문자가 발견되는 위치에 해당하는 index값(위치값) = 3
+		String ext = originalFilename.substring(index + 1);// index + 1 = 4 -> jpg
+
+		String storeFileName = UUID.randomUUID() + "." + ext;// uuid.jpg
+		String key = "upload/" + storeFileName;
+
+		try (InputStream inputStream = file.getInputStream()) {
+			amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
+					.withCannedAcl(CannedAccessControlList.PublicRead));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-        String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
-        Image image = imageUploadDto.toEntity(storeFileUrl, principalDetails.getUser());
-        imageRepository.save(image);
-    }		
+		String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
+		Image image = imageUploadDto.toEntity(storeFileUrl, principalDetails.getUser());
+		imageRepository.save(image);
+	}
 }
-	
-	
-//	@Transactional
-//	public void 사진업로드(MultipartFile file,ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
-//		UUID uuid = UUID.randomUUID(); // UUID
-//		String imageFileName = uuid + "_" + imageUploadDto.getFile().getOriginalFilename();
-//		
-//
-//		Path imageFilePath = Paths.get(uploadFolder + imageFileName);
-//
-//		// 통신이 일어나거나,IO가 일어날 때, 예외가 발생할 수 있다.
-//		try {
-//			Files.write(imageFilePath, imageUploadDto.getFile().getBytes());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		// image 테이블에 저장
-//		Image image = imageUploadDto.toEntity(imageFileName, principalDetails.getUser());
-//		imageRepository.save(image);
-//
-//		// System.out.println(imageEntity.toString());
-//	}

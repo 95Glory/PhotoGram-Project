@@ -39,8 +39,8 @@ public class UserApiController {
 	public ResponseEntity<?> profileImageUrlUpdate(@PathVariable int principalId, MultipartFile profileImageFile,
 			@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		String userProfileUrl = principalDetails.getUser().getProfileImageUrl();
-		User userEntity = userService.회원프로필사진변경(principalId, profileImageFile,userProfileUrl );
-		principalDetails.setUser(userEntity); // 세션 변경
+		User userEntity = userService.회원프로필사진변경(principalId, profileImageFile, userProfileUrl);
+		principalDetails.setUser(userEntity);
 		return new ResponseEntity<>(new CMRespDto<>(1, "프로필사진변경 성공", null), HttpStatus.OK);
 	}
 
@@ -59,6 +59,6 @@ public class UserApiController {
 
 		User userEntity = userService.회원수정(id, userUpdateDto.toEntity());
 		principalDetails.setUser(userEntity);
-		return new CMRespDto<>(1, "회원수정완료", userEntity);// 응답시에 userEntity의 모든 Getter 함수가 호출되고 Json으로 파싱하여 응답한다.
+		return new CMRespDto<>(1, "회원수정완료", userEntity);
 	}
 }

@@ -12,23 +12,23 @@ import com.cos.photogramstart.domain.User.User;
 
 import lombok.Data;
 
+// UserDetails,OAuth2User 인터페이스를 구현한, PrincipalDetails
 @Data
-public class PrincipalDetails implements UserDetails,OAuth2User {
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-	private Map<String,Object> attributes;
+	private Map<String, Object> attributes;
 
 	public PrincipalDetails(User user) {
 		this.user = user;
 	}
-	
-	public PrincipalDetails(User user,Map<String,Object> attributes) {
+
+	public PrincipalDetails(User user, Map<String, Object> attributes) {
 		this.user = user;
 	}
 
-	// 권한 : 한개가 아닐 수 있음. (3개 이상의 권한)
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> collector = new ArrayList<>();
@@ -70,13 +70,11 @@ public class PrincipalDetails implements UserDetails,OAuth2User {
 
 	@Override
 	public Map<String, Object> getAttributes() {
-		// TODO Auto-generated method stub
-		return attributes; //{id:3231312, name: 김영광, email:dsasad@nate.com}
+		return attributes;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return (String) attributes.get("name");
 	}
 }

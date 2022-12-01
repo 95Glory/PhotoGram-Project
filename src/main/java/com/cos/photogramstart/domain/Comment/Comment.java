@@ -27,23 +27,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
-	//git 테스트
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(length=100,nullable = false)
+
+	@Column(length = 100, nullable = false)
 	private String content;
-	
+
 	@JoinColumn(name = "userId")
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonIgnoreProperties({"images"})
+	@JsonIgnoreProperties({ "images" })
 	private User user;
-	
+
 	@JoinColumn(name = "imageId")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Image image;
-	
+
 	private LocalDateTime createDate;
 
 	@PrePersist

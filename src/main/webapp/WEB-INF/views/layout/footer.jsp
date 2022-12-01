@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <footer>
 	<div class="container">
 		<ul>
@@ -15,7 +15,7 @@
 			<li><a href="#a">위치</a></li>
 		</ul>
 		<div class="copy">
-			<p>© 2020 Photogram from There Programing</p>
+			<p>© 2020 Photogram Project By Young Kwang Kim</p>
 		</div>
 	</div>
 </footer>

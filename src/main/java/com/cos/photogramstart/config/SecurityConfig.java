@@ -1,7 +1,5 @@
-
 package com.cos.photogramstart.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,8 +12,8 @@ import com.cos.photogramstart.config.Oauth.OAuth2DetailsService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@EnableWebSecurity // 해당 파일로 시큐리티를 활성화
-@Configuration // IoC     
+@EnableWebSecurity
+@Configuration   
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	private final OAuth2DetailsService oAuth2DetailsService;

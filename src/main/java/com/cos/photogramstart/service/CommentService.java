@@ -26,7 +26,7 @@ public class CommentService {
 	@Transactional
 	public Comment 댓글쓰기(String content, int imageId, int UserId) {
 
-		// Tip (객체를 만들 때, id값만 담아서 insert 할 수 있다.)
+		// 객체를 만들 때, id값만 담아서 insert 할 수 있다.
 		// 대신 return시에 image객체와 user객체는 id값만 가지고 있는 빈 객체를 리턴받는다.
 		Image image = new Image();
 		image.setId(imageId);

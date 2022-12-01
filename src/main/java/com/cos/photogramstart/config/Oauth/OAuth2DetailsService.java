@@ -2,6 +2,8 @@ package com.cos.photogramstart.config.Oauth;
 
 import java.util.Map;
 import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -16,14 +18,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class OAuth2DetailsService extends DefaultOAuth2UserService{
-
-	private final UserRepository userRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		//System.out.println("OAuth2 서비스 탐");
+
 		OAuth2User oauth2User = super.loadUser(userRequest);
-		//System.out.println(oauth2User.getAttributes());
 		
 		Map<String, Object> userInfo = oauth2User.getAttributes();
 		

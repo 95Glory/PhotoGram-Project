@@ -13,14 +13,13 @@ import org.springframework.validation.FieldError;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 import com.cos.photogramstart.handler.ex.CustomValidationException;
 
-@Component // RestController, Service 모든 것들이 Component를 상속해서 만들어져 있음.
+@Component
 @Aspect
 public class ValidationAdvice {
 
 	@Around("execution(* com.cos.photogramstart.web.api.*Controller.*(..))")
 	public Object apiAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
-		//System.out.println("web api 컨트롤러 =====================");
 		Object[] args = proceedingJoinPoint.getArgs();
 		for (Object arg : args) {
 			if (arg instanceof BindingResult) {
@@ -37,8 +36,6 @@ public class ValidationAdvice {
 
 			}
 		}
-		// proceedingJoinPoint => profile 함수의 모든 곳에 접근할 수 있는 변수
-		// profile 함수보다 먼저 실행
 
 		return proceedingJoinPoint.proceed(); // profile 함수가 실행됨.
 	}
@@ -46,7 +43,6 @@ public class ValidationAdvice {
 	@Around("execution(* com.cos.photogramstart.web.*Controller.*(..))")
 	public Object advice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
-		//System.out.println("web 컨트롤러 ==========================");
 		Object[] args = proceedingJoinPoint.getArgs();
 		for (Object arg : args) {
 			if (arg instanceof BindingResult) {

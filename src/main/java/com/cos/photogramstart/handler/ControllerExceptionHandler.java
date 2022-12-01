@@ -19,9 +19,7 @@ public class ControllerExceptionHandler {
 
 	@ExceptionHandler(CustomValidationException.class)
 	public String ValidationException(CustomValidationException e) {
-		// 1.클라이언트에게 응답할 때는 Script 좋음.
-		// 2. Ajax 통신 - CMRespDto
-		// 3. Android 통신 - CMRespDto
+
 		if (e.getErrorMap() == null) {
 			return Script.back(e.getMessage());
 		} else {

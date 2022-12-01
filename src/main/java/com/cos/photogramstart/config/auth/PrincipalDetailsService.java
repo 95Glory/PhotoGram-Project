@@ -19,9 +19,6 @@ public class PrincipalDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		// 1.패스워드는 알아서 체킹하니깐 신경쓸 필요 없다
-		// 2.리턴이 잘되면 자동으로 UserDetails 타입을 세션으로 만든다
-
 		User userEntity = userRepository.findByUsername(username);
 
 		if (userEntity == null) {

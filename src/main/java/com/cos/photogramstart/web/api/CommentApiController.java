@@ -29,7 +29,8 @@ public class CommentApiController {
 	CommentService commentService;
 
 	@PostMapping("/api/comment")
-	public ResponseEntity<?> commentSave(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult,@AuthenticationPrincipal PrincipalDetails principalDetails) {
+	public ResponseEntity<?> commentSave(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult,
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
 		Comment comment = commentService.댓글쓰기(commentDto.getContent(), commentDto.getImageId(),
 				principalDetails.getUser().getId());

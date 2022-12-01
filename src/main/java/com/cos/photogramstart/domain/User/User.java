@@ -24,21 +24,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity // 디비에 테이블을 생성
+@Entity
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	// 나는 연관관계의 주인이 아니므로, 테이블에 컬럼을 만들지 말아라
-	// User를 Select할 때 해당 UserId로 등록된 images를 다 가져와
-	// LAZY = User를 Select할 때 해당 UserId로 등록된 images들을 가져오지마 - 대신 getImages()함수의
-	// image들이 호출될 때 가져와
-	// Eager = User를 Select할 때 해당 UserId로 등록된 images들을 가져와
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({ "user" })
-	private List<Image> images; // 양방향 매핑
+	private List<Image> images;
 
 	@Column(length = 100, unique = true)
 	private String username;
@@ -49,8 +44,8 @@ public class User {
 	@Column(nullable = false)
 	private String name;
 
-	private String website; // 웹사이트
-	private String bio; // 자기소개
+	private String website;
+	private String bio;
 
 	@Column(nullable = false)
 	private String email;
@@ -58,7 +53,7 @@ public class User {
 	private String phone;
 	private String gender;
 	private String profileImageUrl;
-	private String role;// 권한
+	private String role;
 
 	private LocalDateTime createDate;
 

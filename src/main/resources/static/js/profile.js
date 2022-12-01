@@ -95,7 +95,7 @@ function toggleSubscribeModal(obj) {
 	}
 }
 
-// (3) 유저 프로파일 사진 변경 (완)
+// (4) 유저 프로파일 사진 변경 (완)
 function profileImageUpload(pageUserId, principalId) {
 
 	//console.log("pageUserId", pageUserId);
