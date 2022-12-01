@@ -17,7 +17,7 @@ public class WebMvcConfig implements WebMvcConfigurer {// web설정파일
 		// TODO Auto-generated method stub
 		WebMvcConfigurer.super.addResourceHandlers(registry);
 
-		registry.addResourceHandler("/upload/**") // jsp 페이지에서 /upload/** 이런 주소패턴이 나오면 발동
+		registry.addResourceHandler("/image/**") // jsp 페이지에서 /upload/** 이런 주소패턴이 나오면 발동
 				.addResourceLocations("file:///" + uploadFolder).setCachePeriod(60 * 10 * 6)// 1시간
 				.resourceChain(true).addResolver(new PathResourceResolver());
 	}

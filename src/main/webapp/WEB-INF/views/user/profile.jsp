@@ -18,7 +18,7 @@
 						id="userProfileImageInput" />
 				</form>
 
-				<img class="profile-image" src="/upload/${dto.user.profileImageUrl}"
+				<img class="profile-image" src="/image/${dto.user.profileImageUrl}"
 					onerror="this.src='/images/person.jpeg'" id="userProfileImage" />
 			</div>
 		</div>
@@ -81,7 +81,7 @@
 				<c:forEach var="image" items="${dto.user.images}">
 					<!--EL표현식에서 get함수가 자동호출-->
 					<div class="img-box">
-						<a href=""> <img src="/upload/${image.postImageUrl}" />
+						<a href=""> <img src="${image.postImageUrl}" />
 						</a>
 						<div class="comment">
 							<a href="#" class=""> <i class="fas fa-heart"></i><span>${image.likeCount}</span>

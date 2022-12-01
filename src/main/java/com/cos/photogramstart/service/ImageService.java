@@ -75,7 +75,7 @@ public class ImageService {
         String ext = originalFilename.substring(index + 1);// index + 1 = 4 -> jpg
         
         String storeFileName = UUID.randomUUID() + "." + ext;// uuid.jpg
-        String key = "test/" + storeFileName;
+        String key = "upload/" + storeFileName;
 
         try (InputStream inputStream = file.getInputStream()) {
             amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
@@ -85,14 +85,14 @@ public class ImageService {
 		}
 
         String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
-        Image image = imageUploadDto.toEntity(storeFileName, principalDetails.getUser());
+        System.out.println("==============storeFileUrl=============");
+        System.out.println(storeFileUrl);
+        Image image = imageUploadDto.toEntity(storeFileUrl, principalDetails.getUser());
         imageRepository.save(image);
     }		
-
 }
 	
 	
-
 //	@Transactional
 //	public void 사진업로드(MultipartFile file,ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
 //		UUID uuid = UUID.randomUUID(); // UUID

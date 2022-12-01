@@ -34,14 +34,14 @@ function getStoryItem(image) {
 	let item = `<div class="story-list__item">
 	<div class="sl__item__header">
 		<div>
-			<img class="profile-image" src="/upload/${image.user.profileImageUrl}"
+			<img class="profile-image" src="/image/${image.user.profileImageUrl}"
 				onerror="this.src='/images/person.jpeg'" />
 		</div>
 		<div>${image.user.username}</div>
 	</div>
 
 	<div class="sl__item__img">
-		<img src="/upload/${image.postImageUrl}" />
+		<img src="${image.postImageUrl}"/>
 	</div>
 
 	<div class="sl__item__contents">
