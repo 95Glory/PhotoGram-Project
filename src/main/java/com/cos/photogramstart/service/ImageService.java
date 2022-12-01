@@ -34,11 +34,6 @@ public class ImageService {
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
 	
-	@Value("${file.path}")
-	private String uploadFolder;
-	
-	
-	
 	@Transactional(readOnly = true)
 	public List<Image> 인기사진() {
 		return imageRepository.mPopular();

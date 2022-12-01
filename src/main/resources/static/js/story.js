@@ -34,7 +34,7 @@ function getStoryItem(image) {
 	let item = `<div class="story-list__item">
 	<div class="sl__item__header">
 		<div>
-			<img class="profile-image" src="/image/${image.user.profileImageUrl}"
+			<img class="profile-image" src="${image.user.profileImageUrl}"
 				onerror="this.src='/images/person.jpeg'" />
 		</div>
 		<div>${image.user.username}</div>
