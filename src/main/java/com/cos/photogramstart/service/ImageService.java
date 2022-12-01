@@ -80,8 +80,6 @@ public class ImageService {
 		}
 
         String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
-        System.out.println("==============storeFileUrl=============");
-        System.out.println(storeFileUrl);
         Image image = imageUploadDto.toEntity(storeFileUrl, principalDetails.getUser());
         imageRepository.save(image);
     }		

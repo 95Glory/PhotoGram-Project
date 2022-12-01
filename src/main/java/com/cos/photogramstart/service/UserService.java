@@ -45,7 +45,13 @@ public class UserService {
 	private String bucket;
 
 	@Transactional
-	public User 회원프로필사진변경(int principalId, MultipartFile profileImageFile) {
+	public User 회원프로필사진변경(int principalId, MultipartFile profileImageFile,String userProfileUrl) {
+		
+		if(userProfileUrl != null) {
+			String key = userProfileUrl.substring(54);
+			amazonS3Client.deleteObject(bucket, key);
+		}
+
 		ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(profileImageFile.getContentType());
         objectMetadata.setContentLength(profileImageFile.getSize());
@@ -65,6 +71,13 @@ public class UserService {
 		}
         
         String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
+        System.out.println("===========storeFileName=============");
+        System.out.println(storeFileName);
+        System.out.println("===========key=============");
+        System.out.println(key);
+        System.out.println("===========storeFileUrl=============");
+        System.out.println(storeFileUrl);
+
 
 		User userEntity = userRepository.findById(principalId).orElseThrow(() -> {
 			// throw -> return 으로 변경
