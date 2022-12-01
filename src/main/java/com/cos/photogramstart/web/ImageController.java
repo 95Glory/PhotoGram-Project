@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.Image.Image;
@@ -46,7 +48,7 @@ public class ImageController {
 	}
 
 	@PostMapping("/image")
-	public String imageUpload(ImageUploadDto imageUploadDto,
+	public String imageUpload(@RequestPart MultipartFile file,ImageUploadDto imageUploadDto,
 			@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
 		if (imageUploadDto.getFile().isEmpty()) {
@@ -54,7 +56,7 @@ public class ImageController {
 		}
 
 		// 서비스 호출
-		imageService.사진업로드(imageUploadDto, principalDetails);
+		imageService.사진업로드(file,imageUploadDto, principalDetails);
 
 		return "redirect:/user/" + principalDetails.getUser().getId();
 	}

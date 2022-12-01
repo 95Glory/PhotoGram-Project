@@ -1,8 +1,7 @@
 package com.cos.photogramstart.service;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.cos.photogramstart.config.auth.PrincipalDetails;
 import com.cos.photogramstart.domain.Image.Image;
 import com.cos.photogramstart.domain.Image.ImageRepository;
@@ -23,7 +27,18 @@ public class ImageService {
 
 	@Autowired
 	ImageRepository imageRepository;
+	
+	@Autowired
+	AmazonS3Client amazonS3Client;
 
+	@Value("${cloud.aws.s3.bucket}")
+	private String bucket;
+	
+	@Value("${file.path}")
+	private String uploadFolder;
+	
+	
+	
 	@Transactional(readOnly = true)
 	public List<Image> 인기사진() {
 		return imageRepository.mPopular();
@@ -48,28 +63,54 @@ public class ImageService {
 		return images;
 	}
 
-	@Value("${file.path}")
-	private String uploadFolder;
-
 	@Transactional
-	public void 사진업로드(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
-		UUID uuid = UUID.randomUUID(); // UUID
-		String imageFileName = uuid + "_" + imageUploadDto.getFile().getOriginalFilename();
-		System.out.println("이미지 파일이름: " + imageFileName);
+	public void 사진업로드(MultipartFile file,ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
+		
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(file.getContentType());
+        objectMetadata.setContentLength(file.getSize());
 
-		Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+        String originalFilename = file.getOriginalFilename();//김영광.jpg
+        int index = originalFilename.lastIndexOf(".");//'.'이라는 문자가 발견되는 위치에 해당하는 index값(위치값) = 3
+        String ext = originalFilename.substring(index + 1);// index + 1 = 4 -> jpg
+        
+        String storeFileName = UUID.randomUUID() + "." + ext;// uuid.jpg
+        String key = "test/" + storeFileName;
 
-		// 통신이 일어나거나,IO가 일어날 때, 예외가 발생할 수 있다.
-		try {
-			Files.write(imageFilePath, imageUploadDto.getFile().getBytes());
-		} catch (Exception e) {
+        try (InputStream inputStream = file.getInputStream()) {
+            amazonS3Client.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		// image 테이블에 저장
-		Image image = imageUploadDto.toEntity(imageFileName, principalDetails.getUser());
-		imageRepository.save(image);
+        String storeFileUrl = amazonS3Client.getUrl(bucket, key).toString();
+        Image image = imageUploadDto.toEntity(storeFileName, principalDetails.getUser());
+        imageRepository.save(image);
+    }		
 
-		// System.out.println(imageEntity.toString());
-	}
 }
+	
+	
+
+//	@Transactional
+//	public void 사진업로드(MultipartFile file,ImageUploadDto imageUploadDto, PrincipalDetails principalDetails) {
+//		UUID uuid = UUID.randomUUID(); // UUID
+//		String imageFileName = uuid + "_" + imageUploadDto.getFile().getOriginalFilename();
+//		
+//
+//		Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+//
+//		// 통신이 일어나거나,IO가 일어날 때, 예외가 발생할 수 있다.
+//		try {
+//			Files.write(imageFilePath, imageUploadDto.getFile().getBytes());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		// image 테이블에 저장
+//		Image image = imageUploadDto.toEntity(imageFileName, principalDetails.getUser());
+//		imageRepository.save(image);
+//
+//		// System.out.println(imageEntity.toString());
+//	}
