@@ -13,6 +13,7 @@
 	<artifactId>photogram-start</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>photogram-start</name>
+	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
