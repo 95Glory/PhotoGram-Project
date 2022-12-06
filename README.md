@@ -1,9 +1,9 @@
-### 의존성
+# Photogram (인스타그램 클론코딩)
+- Instagram 클론코딩 프로젝트
+- 기존강의에 AWS 독학 후 적용
+- 기간 : 22.10.01 ~ 11.15
 
-- Sring Boot DevTools
-- Lombok
-- Spring Data JPA
-- MariaDB Driver
-- Spring Security
-- Spring Web
-- oauth2-client
+해당 과정은 [이지업클래스](https://easyupclass.e-itwill.com)의 ‘스프링부트 SNS프로젝트 - 포토그램 만들기’ 과정을 수강하면서,  
+
+AWS 기술을 제외하고 해당과정에서 공부한 내용을 정리하였습니다.
+
